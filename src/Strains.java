@@ -47,9 +47,30 @@ public class Strains {
      * Mission 2. The length of the longest common subsequence: letters that appear in both strains in the same order,
      * but not necessarily next to each other. This is the "Shared core" line.
      * Example: "ACGTT" and "AGTC": the longest is "AGT", length 3.
+     *
+     * The table d[i][j] answers: the length of the longest common subsequence of the first i letters
+     * of a and the first j letters of b. The first row and the first column are 0: an empty prefix
+     * has nothing in common with anything.
+     *
+     * The rule is different from the edit distance:
+     *   - if a[i-1] == b[j-1] we can put this letter at the end of the common subsequence of the
+     *     smaller prefixes: d[i][j] = d[i-1][j-1] + 1;
+     *   - otherwise the last letters cannot both be used, so we drop one of them and keep the
+     *     better of the two neighbours: d[i][j] = max(d[i-1][j], d[i][j-1]).
+     * The answer is d[n][m].
      */
     public static int lcsLength(String a, String b) {
-        // TODO Mission 2
-        return -1;
+        int n = a.length(), m = b.length();
+        int[][] d = new int[n + 1][m + 1];
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (a.charAt(i - 1) == b.charAt(j - 1)) {
+                    d[i][j] = d[i - 1][j - 1] + 1;
+                } else {
+                    d[i][j] = Math.max(d[i - 1][j], d[i][j - 1]);
+                }
+            }
+        }
+        return d[n][m];
     }
 }
