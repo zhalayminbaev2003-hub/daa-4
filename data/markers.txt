@@ -1,1 +1,1 @@
-marker CAATACAA
+marker AAGAGAAG

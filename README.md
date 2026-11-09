@@ -1,8 +1,8 @@
 # Assignment 4. Patient Zero
 
-Student ID: 12345
-Name: NcLaMBeK
-Group:
+Student ID: 254072
+Name: Turganbay Islambek
+Group: SE-2540
 
 This file is the report. Fill it in as you go. How to start: `START_HERE.md`. The task: `docs/Assignment4.pdf`.
 
@@ -10,15 +10,15 @@ This file is the report. Fill it in as you go. How to start: `START_HERE.md`. Th
 
 The 9 lines your program prints on your data (`java -cp out Main`):
 
-    Mutations: 67
-    Shared core: 1229
-    Marker hits: 4
-    First hit: 8558
+    Mutations: 105
+    Shared core: 1027
+    Marker hits: 7
+    First hit: 1941
     Border length: 3
-    Shared words: 667
-    Tests needed: 39
-    Cheapest testing: 164
-    Longest chain: 30
+    Shared words: 349
+    Tests needed: 43
+    Cheapest testing: 186
+    Longest chain: 28
 
 My outbreak report (a screenshot of `output/outbreak.html`):
 
@@ -49,7 +49,7 @@ strains. That is why the shared core is bigger than the number of equal letters 
 virus deleted and inserted letters, so after the first change the two strains are shifted relative to
 each other, and letters that match are then found at different positions (for example the letters of A
 before the first deletion and the letters of B after it still belong to the same subsequence). The
-shared core of my strains is 1229 letters, while only part of the strains stands at the same place.
+shared core of my strains is 1027 letters, while only part of the strains stands at the same place.
 
 Mission 3. What does the prefix function tell you, and why does the pointer in the text never goes back in KMP? What is the Border length of my marker and what does it mean?
 
@@ -59,8 +59,8 @@ prefix itself). In KMP I keep k, the number of marker letters that are matched a
 letter does not fit I do not move the text pointer back, I only shorten the part of the marker I still
 believe in, and the only length worth jumping to is pi[k-1]: every other possible continuation would be
 a border of the matched part as well, and pi points to the longest one, so nothing is lost and the text
-is read exactly once. The Border length of my marker is 3 (the marker starts and ends with the same
-three letters, "CAA"), so after a mismatch I can fall back three letters instead of starting from zero,
+is read exactly once. The Border length of my marker is 3 (my marker is AAGAGAAG: it starts and ends with the same three
+letters "AAG"), so after a mismatch I can fall back three letters instead of starting from zero,
 and the marker can overlap with itself.
 
 Mission 4. Why must you compare the letters after the hashes are equal? What happens to the cost of Rabin-Karp if many windows have the same hash?
@@ -104,19 +104,19 @@ Milliseconds, average of 3 runs, from `java -cp out Bench`.
 
 | test | size | time |
 |---|---|---|
-| naive search | 20 000 / 40 000 / 80 000 | 67,3 / 112,1 / 236,8 |
-| KMP | 20 000 / 40 000 / 80 000 | 2,9 / 0,9 / 0,5 |
-| edit distance | 500 / 1000 / 2000 / 4000 | 7,2 / 9,1 / 27,6 / 86,1 |
+| naive search | 20 000 / 40 000 / 80 000 | 59,1 / 97,8 / 202,0 |
+| KMP | 20 000 / 40 000 / 80 000 | 2,9 / 0,8 / 0,4 |
+| edit distance | 500 / 1000 / 2000 / 4000 | 6,3 / 7,8 / 20,9 / 84,0 |
 
 What do the numbers say about how the time grows? When you double the size, by how much does each time grow? Two or three sentences.
 
-The naive search doubles its time when the text doubles (67 -> 112 -> 237 ms), because it tries every
+The naive search doubles its time when the text doubles (59 -> 98 -> 202 ms), because it tries every
 starting position and compares the pattern again and again, that is O(n * m) with a fixed pattern.
 KMP stays at about one millisecond and does not grow with the text at all: the text is read once and
 the pattern pointer only jumps back over the borders, that is O(n + m), and the numbers are so small
 that they mostly measure the start-up of the JVM (the first run is even the slowest one, because the
 JIT has not compiled the method yet). The edit distance grows about four times when the length is
-doubled (7 -> 9 -> 28 -> 86 ms): the table has n * m cells, so the time is quadratic in the length.
+doubled (6 -> 8 -> 21 -> 84 ms): the table has n * m cells, so the time is quadratic in the length.
 
 ## Complexity
 
